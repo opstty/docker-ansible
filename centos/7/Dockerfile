@@ -1,4 +1,4 @@
-FROM rockylinux:9
+FROM centos:7
 
 LABEL org.opencontainers.image.authors="michael@opstty.com"
 
@@ -18,17 +18,29 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; \
         rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 # Install requirements
-RUN dnf -y install epel-release \
-    && dnf -y update \
-    && dnf -y install sudo which systemd python3 python3-pip \
-    && dnf clean all
+RUN yum -y install epel-release \
+    && yum -y update \
+    && yum -y groupinstall "Development Tools" \
+    && yum -y install sudo which openssl-devel bzip2-devel libffi-devel xz-devel wget \
+    && yum clean all
+
+# Install Python 3.8
+RUN wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz \
+    && tar xvf Python-3.8.12.tgz \
+    && cd Python-3.8*/ \
+    && ./configure --enable-optimizations \
+    && make altinstall \
+    && cd .. \
+    && rm -rf Python-3.8* \
+    && yum -y groupremove "Development Tools" \
+    && yum remove -y openssl-devel bzip2-devel libffi-devel xz-devel wget
 
 # Disable requiretty
 RUN sed -i -e 's/^\(Defaults\s*requiretty\)/#--- \1/'  /etc/sudoers
 
 # Install Ansible.
-RUN python3 -m pip install --upgrade --user pip \
-    && python3 -m pip install --upgrade --user ansible==6.6.0
+RUN python3.8 -m pip install --upgrade --user pip \
+    && python3.8 -m pip install --upgrade --user ansible==6.6.0
 
 VOLUME [ "/sys/fs/cgroup" ]
 

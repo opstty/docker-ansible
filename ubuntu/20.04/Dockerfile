@@ -26,7 +26,7 @@ RUN rm -f /lib/systemd/system/systemd*udev* \
 
 # Install Ansible
 RUN python3 -m pip install --upgrade --user pip \
-    && python3 -m pip install --upgrade --user ansible==6.5.0
+    && python3 -m pip install --upgrade --user ansible==6.6.0
 
 VOLUME [ "/sys/fs/cgroup" ]
 

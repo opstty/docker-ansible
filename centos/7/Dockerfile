@@ -40,7 +40,8 @@ RUN sed -i -e 's/^\(Defaults\s*requiretty\)/#--- \1/'  /etc/sudoers
 
 # Install Ansible.
 RUN python3.8 -m pip install --upgrade --user pip \
-    && python3.8 -m pip install --upgrade --user ansible==6.6.0
+    && python3.8 -m pip install --upgrade --user ansible==6.6.0 \
+    && python3.8 -m pip install --upgrade --user --use-pep517 docker-compose
 
 VOLUME [ "/sys/fs/cgroup" ]
 

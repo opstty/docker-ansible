@@ -12,8 +12,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list
 
 # Install requirements
-RUN apt-get update \
-    && apt-get install -y locales systemd systemd-sysv systemd-cron debianutils sudo python3-pip \
+RUN apt-get update --fix-missing \
+    && apt-get install -y software-properties-common \
+    && rm -rf /var/lib/apt/lists/* \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get install -y locales systemd systemd-sysv systemd-cron debianutils sudo python3.9 python3-pip \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /usr/share/doc/* \
     && rm -rf /usr/share/man/* \
@@ -24,9 +27,18 @@ RUN apt-get update \
 RUN rm -f /lib/systemd/system/systemd*udev* \
     && rm -f /lib/systemd/system/getty.target
 
+# Install Python 3.9
+# RUN apt-get update --fix-missing \
+#     && apt-get install -y software-properties-common \
+#     && rm -rf /var/lib/apt/lists/* \
+#     && add-apt-repository ppa:deadsnakes/ppa \
+#     && apt install -y python3.9 \
+#     && rm -rf /var/lib/apt/lists/* \
+#     && apt clean
+
 # Install Ansible
-RUN python3 -m pip install --upgrade --user pip \
-    && python3 -m pip install --upgrade --user ansible==6.6.0
+RUN python3.9 -m pip install --upgrade --user pip \
+    && python3.9 -m pip install --upgrade --user ansible==7.1.0
 
 VOLUME [ "/sys/fs/cgroup" ]
 

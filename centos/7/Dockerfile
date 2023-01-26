@@ -24,14 +24,14 @@ RUN yum -y install epel-release \
     && yum -y install sudo which openssl-devel bzip2-devel libffi-devel xz-devel wget \
     && yum clean all
 
-# Install Python 3.8
-RUN wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz \
-    && tar xvf Python-3.8.12.tgz \
-    && cd Python-3.8*/ \
+# Install Python 3.9
+RUN wget https://www.python.org/ftp/python/3.9.9/Python-3.9.9.tgz \
+    && tar xvf Python-3.9.9.tgz \
+    && cd Python-3.9*/ \
     && ./configure --enable-optimizations \
     && make altinstall \
     && cd .. \
-    && rm -rf Python-3.8* \
+    && rm -rf Python-3.9* \
     && yum -y groupremove "Development Tools" \
     && yum remove -y openssl-devel bzip2-devel libffi-devel xz-devel wget
 
@@ -39,9 +39,9 @@ RUN wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz \
 RUN sed -i -e 's/^\(Defaults\s*requiretty\)/#--- \1/'  /etc/sudoers
 
 # Install Ansible.
-RUN python3.8 -m pip install --upgrade --user pip \
-    && python3.8 -m pip install --upgrade --user ansible==6.6.0 \
-    && python3.8 -m pip install --upgrade --user --use-pep517 docker-compose
+RUN python3.9 -m pip install --upgrade --user pip \
+    && python3.9 -m pip install --upgrade --user ansible==7.1.0 \
+    && python3.9 -m pip install --upgrade --user --use-pep517 docker-compose
 
 VOLUME [ "/sys/fs/cgroup" ]
 

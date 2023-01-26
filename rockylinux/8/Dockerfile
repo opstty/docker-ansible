@@ -20,7 +20,7 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; \
 # Install requirements
 RUN dnf -y install epel-release \
     && dnf -y update \
-    && dnf -y install sudo which systemd python38 \
+    && dnf -y install sudo which systemd python39 \
     && dnf clean all
 
 # Disable requiretty
@@ -28,7 +28,7 @@ RUN sed -i -e 's/^\(Defaults\s*requiretty\)/#--- \1/'  /etc/sudoers
 
 # Install Ansible.
 RUN python3 -m pip install --upgrade --user pip \
-    && python3 -m pip install --upgrade --user ansible==6.6.0
+    && python3 -m pip install --upgrade --user ansible==7.1.0
 
 VOLUME [ "/sys/fs/cgroup" ]
 

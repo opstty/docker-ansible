@@ -13,7 +13,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Install requirements
 RUN apt-get update \
-    && apt-get install -y locales systemd systemd-sysv systemd-cron which sudo python3-pip \
+    && apt-get install -y locales systemd systemd-sysv systemd-cron which sudo python3-pip iproute2 \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /usr/share/doc/* \
     && rm -rf /usr/share/man/* \
